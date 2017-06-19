@@ -7,8 +7,9 @@ import copy
 DEFAULT_VALUE=100
 
 listJobEn=['goalkeeper','libero','left-back','centre-back','right-back','defensive midfield','left midfield','centre midfield','right midfield','attacking midfield','left midfield','right midfield','second striker','winger']
-listJobFr=['gardien','libero','défenseur gauche','défenseur central','défenseur droit','milieu défensif','milieu gauche','milieu axial','milieu droit','milieu offensif','ailier gauche','ailier droit','attaquant de soutien','avant-centre']
-class Player:
+listJobFr=['gardien','libéro','défenseur gauche','défenseur central','défenseur droit','milieu défensif','milieu gauche','milieu axial','milieu droit','milieu offensif','ailier gauche','ailier droit','attaquant de soutien','avant-centre']
+#definition des postes possibles de joueurs
+class Player:  
     def __init__(self, job):     
         """Global Stats"""
         self.baseStrength=DEFAULT_VALUE #1-100
