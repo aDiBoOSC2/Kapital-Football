@@ -2,6 +2,8 @@
 
 import math
 import copy
+import random
+
 #utiliser copy.deepcopy pour copier un object
 
 DEFAULT_VALUE=100
@@ -12,7 +14,7 @@ listJobFr=['gardien','libéro','défenseur gauche','défenseur central','défens
 class Player:  
     def __init__(self, job):     
         """Global Stats"""
-        self.baseStrength=DEFAULT_VALUE #1-100
+        self.baseStrength=random.randint(0,100) #1-100
         self.playedMatchList=[] #True=won False=Lost
         self.woundedList=[] #True/False
         self.easinessJob=[1,0,0,0,0,0,0,0,0,0,0,0,0,0]
