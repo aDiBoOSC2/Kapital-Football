@@ -28,7 +28,7 @@ class Player:
         """ Le moral est calculé à partir du nombre de matchs gagnés(coeff 3), du nombre de blessures(coeff 1)
             et de l'état d'esprit du joueur: si il est en colère son moral diminu de 50% si il est troublé son moral diminu de 25%...
         """
-        if len(self.playedMatchList)>0 or len(self.woundedList)>0:
+        if len(self.playedMatchList)>0 and len(self.woundedList)>0:
             self.moral=100*float(self.playedMatchList.count(True)*3+self.woundedList.count(False))/(len(self.playedMatchList)*3+len(self.woundedList))*( 1*self.spirit['happy']+0.5*(not self.spirit['happy']) )*( 1*(not self.spirit['disturbed'])+0.75*self.spirit['disturbed'] )
             """( 1*self.spirit['happy']+0.5*(not self.spirit['happy']) ) : si il est content self.spirit['happy']=True (soit 1) et (not self.spirit['happy'])=False (soit 0),
                 d'où 1*self.spirit['happy']=1*1=1    0.5*(not self.spirit['happy'])=0.5*0=0    1+0=1, le moral de change pas
