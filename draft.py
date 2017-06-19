@@ -83,7 +83,9 @@ class Team:
         
         fileTeam.close()
 
-team=Team(jobPlayers=[0,0,0,0,0,0,0,0,0,0,0])
-print team.getStrength()
+teamA=Team(jobPlayers=[0,0,0,0,0,0,0,0,0,0,0])
+teamB=Team(jobPlayers=[0,0,0,0,0,0,0,0,0,0,0])
+print "Force de la team 1 :",teamA.getStrength()
+print "Force de la team 2 :",teamB.getStrength()
 
 
