@@ -3,7 +3,7 @@
 Kapital Football est un jeu de management d'une équipe de football.
 
 ----
-##Architecture du dépôt :
+## Architecture du dépôt :
 - Maquette :
 	Le dossier *maquette* est utilisé pour classer ce qui sert à concevoir le projet. Ce sont les bouts de code et les tests.
 	
