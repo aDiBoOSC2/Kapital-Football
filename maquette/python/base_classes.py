@@ -33,45 +33,85 @@ class Player:
         
         """Global Stats"""
         self.name="Joueur"
-        self.baseStrength=DEFAULT_VALUE #1-100
+        self.__baseStrength=DEFAULT_VALUE #1-100
         self.playedMatchList=[] #True=won False=Lost
         self.woundedList=[] #True/False
         self.easinessJob=[random() for i in range(14)]#On initialise les 14 cases avec random()
         """Stats during the match"""
-        self.fitness=DEFAULT_VALUE #1-100
-        self.moral=DEFAULT_VALUE #1-100
+        self.__fitness=DEFAULT_VALUE #1-100
+        self.__currentMoral=DEFAULT_VALUE #1-100
+        self.__moral=self.__currentMoral
         self.currentPost=post
         self.injured=False
         self.spirit={'happy':True,'disturbed':False}
-        self.currentStrength=self.baseStrength*float(self.fitness)/100*float( self.getMoral() )/100*self.easinessJob[self.currentPost]
-        
-    def updateMoral(self):
+        self.__currentStrength=self.baseStrength*float(self.fitness)/100*float( self.moral )/100*self.easinessJob[self.currentPost]
+        self.strength=self.__currentStrength
+
+    @property
+    def baseStrength(self):
+        return self.__baseStrength
+    @baseStrength.setter
+    def baseStrength(self, baseStrength):
+        if baseStrength<0:
+            raise ValueError("value of baseStrength must be over 0")
+        elif baseStrength>100:
+            raise ValueError("value of baseStrength must be under 100")
+        self.__baseStrength = baseStrength
+
+    @property
+    def fitness(self):
+        return self.__fitness
+    @fitness.setter
+    def fitness(self, fitness):
+        if fitness<0:
+            raise ValueError("value of fitness must be over 0")
+        elif fitness>100:
+            raise ValueError("value of fitness must be under 100")
+        self.__fitness = fitness
+
+    @property
+    def moral(self):
+        return self.__moral
+    @moral.setter
+    def moral(self, moral):
+        if moral<0:
+            raise ValueError("value of moral must be over 0")
+        elif moral>100:
+            raise ValueError("value of moral must be under 100")
+        self.__moral = moral
+
+    @property
+    def currentMoral(self):
         """ Le moral est calculé à partir du nombre de matchs gagnés(coeff 3), du nombre de blessures(coeff 1)
             et de l'état d'esprit du joueur: si il est en colère son moral diminu de 50% si il est troublé son moral diminu de 25%...
         """
         if len(self.playedMatchList)>0 and len(self.woundedList)>0:
-            self.moral=100*float(self.playedMatchList.count(True)*3+self.woundedList.count(False))/(len(self.playedMatchList)*3+len(self.woundedList))*( 1*self.spirit['happy']+0.5*(not self.spirit['happy']) )*( 1*(not self.spirit['disturbed'])+0.75*self.spirit['disturbed'] )
+            self.__currentMoral=100*float(self.playedMatchList.count(True)*3+self.woundedList.count(False))/(len(self.playedMatchList)*3+len(self.woundedList))*( 1*self.spirit['happy']+0.5*(not self.spirit['happy']) )*( 1*(not self.spirit['disturbed'])+0.75*self.spirit['disturbed'] )
             """( 1*self.spirit['happy']+0.5*(not self.spirit['happy']) ) : si il est content self.spirit['happy']=True (soit 1) et (not self.spirit['happy'])=False (soit 0),
                 d'où 1*self.spirit['happy']=1*1=1    0.5*(not self.spirit['happy'])=0.5*0=0    1+0=1, le moral de change pas
             """
         else:
-            self.moral=DEFAULT_VALUE
-            
-    def getMoral(self, update=True):
-        if update==True:
-           self.updateMoral()
-        return self.moral
+            self.__currentMoral=DEFAULT_VALUE
+        self.moral=self.__currentMoral
+        return self.__currentMoral
+    @currentMoral.setter
+    def currentMoral(self, moral):
+        self.__moral = moral
+        self.moral=self.__currentMoral
     
-    def updateCurrentStrength(self):
-        self.currentStrength=self.baseStrength*float(self.fitness)/100*float( self.getMoral() )/100*self.easinessJob[self.currentPost]
-        
-    def getCurrentStrength(self, update=True):
-        if update==True:
-            self.updateCurrentStrength()
-        return self.currentStrength
-    
-    def getPost(self):
-        return self.currentPost
+    @property
+    def currentStrength(self):
+        self.__currentStrength=self.baseStrength*float(self.fitness)/100*float( self.moral )/100*self.easinessJob[self.currentPost]
+        self.strength=self.__currentStrength
+        return self.__currentStrength
+    @currentStrength.setter
+    def currentStrength(self, currentStrength):
+        if currentStrength<0:
+            raise ValueError("value of currentStrength must be over 0")
+        elif currentStrength>100:
+            raise ValueError("value of currentStrength must be under 100")
+        self.__currentStrength = currentStrength
+        self.strength=__currentStrength
 
 class Team:
     def __init__(self,filePath="",jobPlayers=[]):
@@ -83,15 +123,7 @@ class Team:
         else:
             for i in jobPlayers:
                 self.playersList.append(Player(i))
-        self.strength=math.fsum(Player.getCurrentStrength() for Player in self.playersList)
-        
-    def updateStrength(self):
-        self.strength=math.fsum(Player.getCurrentStrength() for Player in self.playersList)
-        
-    def getStrength(self, update=True):
-        if update==True:
-            self.updateStrength()
-        return self.strength
+        self.__strength=math.fsum(Player.currentStrength for Player in self.playersList)
     
     def getPlayer(self, index):
         return self.playersList[index]
@@ -121,3 +153,11 @@ class Team:
         with open(filePath,"wb") as fileTeam:
             writePickler = cPickle.Pickler(fileTeam)
             writePickler.dump(self)
+    
+    @property
+    def strength(self):
+        self.__strength=math.fsum(Player.currentStrength for Player in self.playersList)
+        return self.__strength
+    @strength.setter
+    def strength(self, strength):
+        self.__strength = strength

@@ -15,7 +15,7 @@ def game(team1,team2):
     nbBoucles=90
     #0: monte 1: reste 2: prendre
     for i in range(0,nbBoucles):
-        var=team1.getStrength()*random.random()*coeff-team2.getStrength()*random.random()*(1-coeff)
+        var=team1.strength*random.random()*coeff-team2.strength*random.random()*(1-coeff)
         if balle==1:#Equipe 1 a la balle
             if var>0:#monte
                 currLine=currLine+1

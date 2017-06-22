@@ -9,12 +9,12 @@ import cPickle
 
 print "Equipe 1:"
 team1=Team(jobPlayers=[0,0,0,0,0,0,0,0,0,0,0])
-print "Force :",team1.getStrength()
+print "Force :",team1.strength
 
 print "Equipe 2:"
 
 team2=Team(jobPlayers=[0,1,2,3,4,5,6,7,8,9,10])
-print "Force :",team2.getStrength()
+print "Force :",team2.strength
 
 for i in range(10):
     scoreT1, scoreT2 = game(team1,team2)
