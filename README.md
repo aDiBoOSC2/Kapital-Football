@@ -9,4 +9,5 @@ Kapital Football est un jeu de management d'une équipe de football.
 
 	- Python :  
 	Le dossier *maquette/python* est utilisé pour les ébauches de code en Python.  
-	Le Python permet une création rapide et multiplateforme des différentes fonctionnalités algorithmiques que l'on veut apporter, mais n'est pas destiné à régir le projet final.
+	Le Python permet une création rapide et multiplateforme des différentes fonctionnalités algorithmiques que l'on veut apporter, mais n'est pas destiné à régir le projet final, bien que l'on puisse l'utiliser pour créer des application natives pour Windows, Linux, Mac OSX, IOS, et Android.
+
