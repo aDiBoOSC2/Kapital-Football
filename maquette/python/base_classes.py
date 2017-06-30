@@ -23,7 +23,7 @@ class Player:
     Do NOT confuse with the enduser, that will train the Player.
     """
     
-    def __init__(self, post,name="Joueur"):
+    def __init__(self, post):
         """Initialisation member.
          
         Use Player(post) to create a new player.
@@ -32,7 +32,7 @@ class Player:
         """
         
         """Global Stats"""
-        self.name=name
+        self.name="Joueur"
         self.__baseStrength=DEFAULT_VALUE #1-100
         self.playedMatchList=[] #True=won False=Lost
         self.woundedList=[] #True/False
@@ -101,7 +101,7 @@ class Player:
     
     @property
     def currentStrength(self):
-        self.__currentStrength=(self.baseStrength*float(self.fitness)/100*float( self.moral )/100*self.easinessJob[self.currentPost])* (not self.injured)
+        self.__currentStrength=self.baseStrength*float(self.fitness)/100*float( self.moral )/100*self.easinessJob[self.currentPost]
         self.strength=self.__currentStrength
         return self.__currentStrength
     @currentStrength.setter
@@ -114,19 +114,15 @@ class Player:
         self.strength=__currentStrength
 
 class Team:
-    def __init__(self,filePath="",jobPlayers=[], namePlayers=[]):
+    def __init__(self,filePath="",jobPlayers=[]):
         self.playersList=[] 
         self.filePath=filePath
         self.score=0
-        self.currentPos=0
-        self.hasBall=False
-        self.leftTime=90
-        self.nbCurrentPlayer=11
         if filePath != "":
             self.loadFromFile(filePath)
         else:
-            for job in jobPlayers:
-                self.playersList.append(Player(job))
+            for i in jobPlayers:
+                self.playersList.append(Player(i))
         self.__strength=math.fsum(Player.currentStrength for Player in self.playersList)
     
     def getPlayer(self, index):
@@ -157,28 +153,6 @@ class Team:
         with open(filePath,"wb") as fileTeam:
             writePickler = cPickle.Pickler(fileTeam)
             writePickler.dump(self)
-
-    def update(self):
-        """ Actualise l'équipe."""
-        self.leftTime-=1
-        """ Définit si un joueur est blessé """
-        for player in self.playersList:
-            if player.injured==True:
-                continue
-            if randint(0,int(25000*float(player.fitness)/100*float( player.moral )/100*player.easinessJob[player.currentPost])) in range(0,1):#5000
-                player.injured=True
-                self.nbCurrentPlayer-=1
-
-    def restore(self):
-        self.leftTime=90
-        self.score=0
-        self.currentPos=0
-        self.hasBall=False
-        """Réinitialise les propriétés de match des joueurs.
-        """
-        for player in self.playersList:
-            player.injured=False
-        self.nbCurrentPlayer=11
     
     @property
     def strength(self):
